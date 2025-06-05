@@ -1,29 +1,721 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ChatGPT UI Clone</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>IM Creates</title>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+  />
+  <style>
+    :root {
+      --color-primary-light: #26c6da; /* teal light */
+      --color-primary-dark: #007c91; /* teal dark */
+      --color-secondary-light: #80deea; /* light cyan */
+      --color-secondary-dark: #004d56; /* deep teal */
+      --color-bg: #e8f6f9; /* very light cyan */
+      --color-white: #ffffff;
+      --color-gray-light: #cfd8dc;
+      --color-gray-dark: #37474f;
+      --font-heading: 'Poppins', Arial, sans-serif;
+      --font-body: 'Open Sans', Arial, sans-serif;
+    }
+    @import url('https://fonts.googleapis.com/css2?family=Open+Sans&family=Poppins:wght@600&display=swap');
+
+    * {
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-body);
+      margin: 0;
+      background: var(--color-bg);
+      color: var(--color-gray-dark);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* CREATIVE COLORFUL HEADER */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 9999;
+      background: linear-gradient(135deg, var(--color-primary-light), var(--color-primary-dark), var(--color-secondary-light), var(--color-secondary-dark));
+      background-size: 400% 400%;
+      animation: gradientAnimation 15s ease infinite;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      height: 60px;
+      font-family: var(--font-heading);
+      user-select: none;
+    }
+    @keyframes gradientAnimation {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+    header .logo {
+      font-weight: 900;
+      font-size: 1.6rem;
+      background: linear-gradient(90deg, #036579, #036579, #036579);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      cursor: default;
+      user-select: none;
+      text-shadow:
+         0 0 5px #036579(38, 198, 218, 0.9),
+         0 0 10px rgba(128, 222, 234, 0.8);
+      letter-spacing: 0.1em;
+    }
+    nav {
+      display: flex;
+      gap: 24px;
+      font-weight: 700;
+      font-size: 1rem;
+      user-select: none;
+    }
+    nav a {
+      color: var(--color-white);
+      text-decoration: none;
+      position: relative;
+      padding: 4px 0;
+      transition: color 0.4s ease;
+    }
+    nav a::after {
+      content: '';
+      position: absolute;
+      height: 3px;
+      width: 0;
+      bottom: 0;
+      left: 0;
+      background: var(--color-secondary-light);
+      box-shadow: 0 0 8px var(--color-secondary-light), 0 0 15px var(--color-secondary-light);
+      transition: width 0.4s ease;
+      border-radius: 2px;
+    }
+    nav a:hover,
+    nav a:focus {
+      color: var(--color-secondary-light);
+      outline: none;
+    }
+    nav a:hover::after,
+    nav a:focus::after {
+      width: 100%;
+    }
+
+    main {
+      flex-grow: 1;
+      max-width: 1000px;
+      margin: 2rem auto 4rem;
+      padding: 0 1rem;
+      width: 100%;
+    }
+
+    section {
+      background: var(--color-white);
+      border-radius: 16px;
+      padding: 2.5rem 2rem;
+      box-shadow: 0 8px 24px rgb(0 0 0 / 0.08);
+      margin-bottom: 2.5rem;
+      scroll-margin-top: 80px;
+      transition: box-shadow 0.3s ease;
+    }
+    section:hover {
+      box-shadow: 0 16px 48px rgb(0 0 0 / 0.12);
+    }
+
+    h2 {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      margin-bottom: 1.25rem;
+      font-size: 2rem;
+      color: var(--color-primary-dark);
+      position: relative;
+    }
+    h2::after {
+      content: '';
+      display: block;
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(
+        90deg,
+        var(--color-primary-light),
+        var(--color-secondary-light)
+      );
+      border-radius: 2px;
+      margin-top: 8px;
+      box-shadow: 0 4px 12px rgba(128, 222, 234, 0.7);
+    }
+
+    p {
+      margin: 0.75rem 0 1.5rem;
+      font-size: 1.1rem;
+      color: var(--color-gray-dark);
+    }
+
+    ul {
+      list-style: none;
+      padding-left: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    ul li {
+      background: linear-gradient(
+        135deg,
+        var(--color-secondary-light),
+        var(--color-secondary-dark)
+      );
+      color: var(--color-white);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-weight: 600;
+      box-shadow: 0 2px 10px rgba(139, 108, 60, 0.4);
+      user-select: none;
+      transition: transform 0.3s ease;
+      cursor: default;
+    }
+    ul li:hover {
+      transform: scale(1.05);
+    }
+
+    /* PORTFOLIO ITEMS */
+    .portfolio-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    @media (min-width: 600px) {
+      .portfolio-list {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    .portfolio-item {
+      background: linear-gradient(
+        135deg,
+        var(--color-primary-light),
+        var(--color-primary-dark)
+      );
+      border-radius: 1rem;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0, 124, 145, 0.5);
+      color: var(--color-white);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      user-select: none;
+    }
+    .portfolio-item:hover {
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 16px 48px rgba(0, 124, 145, 0.8);
+    }
+    .portfolio-img {
+      flex-shrink: 0;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      border-bottom: 4px solid var(--color-secondary-light);
+      filter: brightness(0.85);
+      transition: filter 0.3s ease;
+    }
+    .portfolio-item:hover .portfolio-img {
+      filter: brightness(1);
+    }
+    .portfolio-info {
+      padding: 1.5rem 1.5rem 2rem;
+    }
+    .portfolio-info h3 {
+      margin-top: 0;
+      font-weight: 700;
+    }
+    .portfolio-info p {
+      font-size: 1rem;
+      color: var(--color-white);
+      opacity: 0.9;
+    }
+    .tech-stack {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      opacity: 0.75;
+      font-style: italic;
+    }
+    .portfolio-links a {
+      margin-right: 12px;
+      color: var(--color-secondary-light);
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    .portfolio-links a:hover {
+      color: var(--color-white);
+      text-shadow: 0 0 4px var(--color-secondary-light);
+    }
+
+    /* SERVICES */
+    #services ul {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+    }
+    #services ul li {
+      background: linear-gradient(
+        135deg,
+        var(--color-primary-dark),
+        var(--color-primary-light)
+      );
+      color: var(--color-white);
+      padding: 1rem 1.75rem;
+      border-radius: 40px;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 16px rgba(0, 124, 145, 0.45);
+      cursor: default;
+      user-select: none;
+      transition: transform 0.3s ease;
+    }
+    #services ul li:hover {
+      transform: scale(1.1);
+      box-shadow: 0 8px 24px rgba(0, 124, 145, 0.7);
+    }
+
+    /* RESUME */
+    #resume a {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--color-primary-dark);
+      background: var(--color-secondary-light);
+      border-radius: 30px;
+      box-shadow: 0 4px 12px rgba(128, 222, 234, 0.6);
+      text-decoration: none;
+      transition: background-color 0.3s ease, color 0.3s ease,
+        transform 0.3s ease;
+      user-select: none;
+    }
+    #resume a:hover,
+    #resume a:focus {
+      background: var(--color-secondary-dark);
+      color: var(--color-white);
+      transform: scale(1.05);
+      outline: none;
+    }
+
+    /* TESTIMONIALS */
+    #testimonials blockquote {
+      background: var(--color-primary-light);
+      color: var(--color-white);
+      border-radius: 12px;
+      padding: 1.5rem 2rem;
+      font-style: italic;
+      margin: 1rem 0;
+      box-shadow: 0 8px 24px rgba(0, 124, 145, 0.55);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      user-select: none;
+    }
+    #testimonials blockquote:hover {
+      background: var(--color-primary-dark);
+      box-shadow: 0 12px 36px rgba(0, 124, 145, 0.75);
+    }
+
+    /* BLOG */
+    #blog p {
+      font-size: 1.1rem;
+      text-align: center;
+      font-weight: 600;
+      color: var(--color-primary-dark);
+      user-select: none;
+    }
+
+    #blog a {
+      color: var(--color-primary-light);
+      font-weight: 700;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      user-select: none;
+    }
+    #blog a:hover,
+    #blog a:focus {
+      color: var(--color-secondary-dark);
+      outline: none;
+    }
+
+    /* CONTACT FORM with floating label style */
+    #contact p {
+      text-align: center;
+      margin-top: 1rem;
+      font-weight: 600;
+      font-size: 1rem;
+      user-select: none;
+    }
+
+    .contact-form {
+      max-width: 600px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.75rem;
+    }
+    .form-group {
+      position: relative;
+      margin-top: 1rem;
+    }
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 1rem 1rem 1rem 1rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 2px solid var(--color-gray-light);
+      outline: none;
+      font-family: var(--font-body);
+      transition: border-color 0.3s ease;
+      resize: vertical;
+      background: var(--color-white);
+      color: var(--color-gray-dark);
+    }
+    .form-group textarea {
+      min-height: 120px;
+    }
+    .form-group label {
+      position: absolute;
+      top: 50%;
+      left: 12px;
+      transform: translateY(-50%);
+      transition: all 0.3s ease;
+      pointer-events: none;
+      font-size: 1rem;
+      color: var(--color-gray-light);
+      background: var(--color-white);
+      padding: 0 4px;
+      user-select: none;
+    }
+    .form-group input:focus,
+    .form-group input:not(:placeholder-shown),
+    .form-group textarea:focus,
+    .form-group textarea:not(:placeholder-shown) {
+      border-color: var(--color-primary-light);
+    }
+    .form-group input:focus + label,
+    .form-group input:not(:placeholder-shown) + label,
+    .form-group textarea:focus + label,
+    .form-group textarea:not(:placeholder-shown) + label {
+      top: -10px;
+      font-size: 0.8rem;
+      color: var(--color-primary-dark);
+    }
+
+    .contact-form button {
+      background: linear-gradient(
+        45deg,
+        var(--color-secondary-light),
+        var(--color-secondary-dark)
+      );
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 40px;
+      color: var(--color-white);
+      font-weight: 700;
+      font-size: 1.2rem;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(128, 222, 234, 0.7);
+      transition: background 0.3s ease, transform 0.3s ease;
+      user-select: none;
+      margin-top: 1.5rem;
+    }
+    .contact-form button:hover,
+    .contact-form button:focus {
+      background: linear-gradient(
+        45deg,
+        var(--color-secondary-dark),
+        var(--color-secondary-light)
+      );
+      transform: scale(1.05);
+      outline: none;
+    }
+
+    /* SOCIAL LINKS */
+    #contact p.follow {
+      margin-top: 1rem;
+      font-weight: 600;
+      font-size: 1rem;
+      text-align: center;
+    }
+
+    #contact p.follow a {
+      color: var(--color-primary-dark);
+      font-weight: 700;
+      margin: 0 16px;
+      text-decoration: none;
+      user-select: none;
+      transition: color 0.3s ease, transform 0.3s ease;
+    }
+    #contact p.follow a:hover,
+    #contact p.follow a:focus {
+      color: var(--color-secondary-dark);
+      transform: scale(1.15);
+      outline: none;
+    }
+
+    #contact p.follow a i {
+      margin-right: 6px;
+    }
+
+    /* FOOTER */
+    footer {
+      background: linear-gradient(
+        45deg,
+        var(--color-primary-dark),
+        var(--color-primary-light)
+      );
+      color: var(--color-white);
+      text-align: center;
+      padding: 1.5rem 0;
+      font-weight: 600;
+      user-select: none;
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 600px) {
+      header {
+        padding: 0 1rem;
+        height: 50px;
+      }
+      header .logo {
+        font-size: 1.2rem;
+      }
+      nav {
+        gap: 16px;
+        font-size: 0.9rem;
+      }
+      main {
+        margin: 1.5rem auto 3rem;
+      }
+      section {
+        padding: 1.5rem 1rem;
+      }
+      .portfolio-info {
+        padding: 1rem 1rem 1.5rem;
+      }
+      .portfolio-list {
+        grid-template-columns: 1fr;
+      }
+      .contact-form {
+        gap: 1.25rem;
+      }
+      .contact-form button {
+        font-size: 1rem;
+        padding: 0.8rem 1.5rem;
+      }
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <aside class="sidebar">
-      <h1>ChatGPT</h1>
-      <button id="newChatBtn">+ New Chat</button>
-      <ul id="chatList"></ul>
-    </aside>
+  <header>
+    <div class="logo" aria-label="IM Creates logo">IM Creates</div>
+    <nav role="navigation" aria-label="Primary navigation">
+      <a href="#about" tabindex="1">About Me</a>
+      <a href="#portfolio" tabindex="2">Portfolio</a>
+      <a href="#services" tabindex="3">Services</a>
+      <a href="#resume" tabindex="4">Resume</a>
+      <a href="#testimonials" tabindex="5">Testimonials</a>
+      <a href="#blog" tabindex="6">Blog</a>
+      <a href="#contact" tabindex="7">Contact</a>
+    </nav>
+  </header>
 
-    <main class="chat-area">
-      <div class="chat-messages" id="chatMessages"></div>
+  <main>
+    <section id="about" tabindex="-1">
+      <h2>About Me</h2>
+      <p>
+        Hi, I'm Indrajit Mondal — a passionate Web Developer based in [Your City or Country].
+        I specialize in building elegant, responsive, and user-friendly digital experiences.
+        Whether it's developing robust backend systems or crafting sleek front-end designs,
+        I combine creativity with technical skill to deliver impactful results.
+      </p>
+      <h3>Skills</h3>
+      <ul aria-label="Skills list">
+        <li>HTML, CSS, JavaScript</li>
+        <li>React, Node.js</li>
+        <li>UI/UX Design</li>
+        <li>SEO Optimization</li>
+      </ul>
+    </section>
 
-      <div class="input-area">
-        <textarea id="userInput" placeholder="Send a message..."></textarea>
-        <button id="sendBtn">➤</button>
+    <section id="portfolio" tabindex="-1">
+      <h2>Portfolio</h2>
+      <div class="portfolio-list" aria-label="Portfolio projects">
+        <article class="portfolio-item" role="region" aria-labelledby="proj1-title">
+          <img
+            src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80"
+            alt="Screenshot of Project 1"
+            class="portfolio-img"
+            loading="lazy"
+          />
+          <div class="portfolio-info">
+            <h3 id="proj1-title">Creative Landing Page</h3>
+            <p>
+              Developed a vibrant landing page with animations and a fully responsive layout.
+            </p>
+            <p class="tech-stack">Tech Stack: HTML, CSS, JavaScript, GSAP</p>
+            <div class="portfolio-links">
+              <a href="https://github.com/yourprofile/project1" target="_blank" rel="noopener" aria-label="GitHub link to Creative Landing Page"
+                ><i class="fab fa-github"></i> GitHub</a
+              >
+              <a href="https://yourprojectdemo.com/project1" target="_blank" rel="noopener" aria-label="Live demo of Creative Landing Page"
+                >Live Demo</a
+              >
+            </div>
+          </div>
+        </article>
+
+        <article class="portfolio-item" role="region" aria-labelledby="proj2-title">
+          <img
+            src="https://images.unsplash.com/photo-1506765515384-028b60a970df?auto=format&fit=crop&w=800&q=80"
+            alt="Screenshot of Project 2"
+            class="portfolio-img"
+            loading="lazy"
+          />
+          <div class="portfolio-info">
+            <h3 id="proj2-title">Dashboard Application</h3>
+            <p>
+              Built a data-driven dashboard with React and Node.js backend providing real-time updates.
+            </p>
+            <p class="tech-stack">Tech Stack: React, Node.js, Express, MongoDB</p>
+            <div class="portfolio-links">
+              <a href="https://github.com/yourprofile/project2" target="_blank" rel="noopener" aria-label="GitHub link to Dashboard Application"
+                ><i class="fab fa-github"></i> GitHub</a
+              >
+              <a href="https://yourprojectdemo.com/project2" target="_blank" rel="noopener" aria-label="Live demo of Dashboard Application"
+                >Live Demo</a
+              >
+            </div>
+          </div>
+        </article>
       </div>
-    </main>
-  </div>
+    </section>
 
-  <script src="script.js"></script>
+    <section id="services" tabindex="-1">
+      <h2>Services</h2>
+      <ul aria-label="List of services offered">
+        <li>Web Development</li>
+        <li>Branding</li>
+        <li>UI Design</li>
+        <li>SEO</li>
+      </ul>
+    </section>
+
+    <section id="resume" tabindex="-1">
+      <h2>Resume</h2>
+      <p>
+        <a href="resume.pdf" download aria-label="Download IM Creates resume">
+          Download my Resume
+        </a>
+      </p>
+      <h3>Experience Timeline</h3>
+      <ul aria-label="Experience timeline">
+        <li><strong>2021 - Present:</strong> Full-Stack Developer at XYZ Company</li>
+        <li><strong>2019 - 2021:</strong> Frontend Developer at ABC Agency</li>
+        <li><strong>2015 - 2019:</strong> Bachelor in Computer Science, University</li>
+        <li><strong>2014:</strong> Certified Web Developer (Certification XYZ)</li>
+      </ul>
+    </section>
+
+    <section id="testimonials" tabindex="-1">
+      <h2>Testimonials</h2>
+      <blockquote>
+        "Indrajit is a fantastic developer! Delivered the project ahead of schedule and with outstanding quality."
+        <br /><strong>- Client A</strong>
+      </blockquote>
+      <blockquote>
+        "Great attention to detail and creativity, always a pleasure to work with."
+        <br /><strong>- Colleague B</strong>
+      </blockquote>
+    </section>
+
+    <section id="blog" tabindex="-1">
+      <h2>Blog</h2>
+      <p>
+        Check out my latest articles on tech, design, and web development processes.<br />
+        <a href="https://yourblog.com" target="_blank" rel="noopener" >Visit Blog &rarr;</a>
+      </p>
+    </section>
+
+    <section id="contact" tabindex="-1">
+      <h2>Contact Me</h2>
+      <form class="contact-form" aria-label="Contact form" novalidate>
+        <div class="form-group">
+          <input type="text" id="name" name="name" required placeholder=" " />
+          <label for="name">Your Name</label>
+        </div>
+        <div class="form-group">
+          <input type="email" id="email" name="email" required placeholder=" " />
+          <label for="email">Your Email</label>
+        </div>
+        <div class="form-group">
+          <textarea id="message" name="message" required placeholder=" "></textarea>
+          <label for="message">Your Message</label>
+        </div>
+        <button type="submit" tabindex="0">Send Message</button>
+      </form>
+      <p class="follow">Follow me on social media:</p>
+      <p class="follow">
+        <a
+          href="https://github.com/yourprofile"
+          target="_blank"
+          rel="noopener"
+          aria-label="GitHub profile"
+          tabindex="0"
+          ><i class="fab fa-github"></i> GitHub</a
+        >
+        <a
+          href="https://www.linkedin.com/in/yourprofile"
+          target="_blank"
+          rel="noopener"
+          aria-label="LinkedIn profile"
+          tabindex="0"
+          ><i class="fab fa-linkedin"></i> LinkedIn</a
+        >
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2023 IM Creates. All rights reserved.</p>
+  </footer>
+
+  <script>
+   // Form submission handler (mock)
+   document.querySelector('.contact-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const form = e.target;
+      const name = form.name.value.trim();
+      const email = form.email.value.trim();
+      const message = form.message.value.trim();
+      if (!name || !email || !message) {
+        alert('Please fill all the fields before submitting.');
+        return;
+}
+      // Simulate sending message
+      alert(`Thank you, ${name}! Your message has been sent.`);
+      form.reset();
+});
+// Smooth scroll for nav links
+    document.querySelectorAll('nav a').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const href = link.getAttribute('href');
+        document.querySelector(href).scrollIntoView({ behavior: 'smooth' });
+      });
+});
+  </script>
 </body>
 </html>
